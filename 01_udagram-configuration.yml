@@ -39,7 +39,7 @@ Resources:
     Properties:
       CidrBlock: !Ref VpcCIDR
       EnableDnsHostnames: true
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Ref EnvironmentName
     Metadata:
@@ -290,7 +290,6 @@ Resources:
           cd /var/www/html
           echo "Udacity Demo Web Server Up and Running!" > index.html
       ImageId: ami-005bdb005fb00e791
-      KeyName: udagram-userkey
       SecurityGroups:
         - !Ref WebServerSecGroup
       InstanceType: t3.medium
