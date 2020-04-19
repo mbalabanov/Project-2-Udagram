@@ -370,36 +370,27 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 643f0009-8b98-4d9b-8efc-06bf7e16dff8
-  UdaS3Bucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      AccessControl: PublicRead
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: error.html
-  Udabucketpolicy:
-    Type: 'AWS::S3::BucketPolicy'
-    Properties:
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Sid: PublicReadGetObject
-            Effect: Allow
-            Principal: '*'
-            Action:
-              - 's3:GetObject'
-            Resource: !Join 
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref UdaS3Bucket
-                - /*
-      Bucket: !Ref UdaS3Bucket
 Outputs:
   VPC:
     Description: A reference to the created VPC
     Value: !Ref VPC
     Export:
       Name: !Sub '${EnvironmentName}-VPCID'
+  VPCPublicRouteTable:
+    Description: Public Routing
+    Value: !Ref PublicRouteTable
+    Export:
+      Name: !Sub '${EnvironmentName}-PUB-RT'
+  VPCPrivateRouteTable1:
+    Description: Private Routing AZ1
+    Value: !Ref PrivateRouteTable1
+    Export:
+      Name: !Sub '${EnvironmentName}-PRI1-RT'
+  VPCPrivateRouteTable2:
+    Description: Private Routing AZ2
+    Value: !Ref PrivateRouteTable2
+    Export:
+      Name: !Sub '${EnvironmentName}-PRI2-RT'
   PublicSubnets:
     Description: A list of the public subnets
     Value: !Join 
@@ -416,19 +407,26 @@ Outputs:
         - !Ref PrivateSubnet2
     Export:
       Name: !Sub '${EnvironmentName}-PRIV-NETS'
-  WebsiteURL:
-    Value: !Join 
-      - ''
-      - - 'http://'
-        - !GetAtt 
-          - WebAppGroup
-          - PublicDnsName
-    Description: Hopefully the URL of the actual server
-  S3URL:
-    Value: !GetAtt 
-      - UdaS3Bucket
-      - WebsiteURL
-    Description: URL for website hosted on S3
+  PublicSubnet1:
+    Description: A reference to the public subnet in the 1st Availability Zone
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: !Sub '${EnvironmentName}-PUB1-SN'
+  PublicSubnet2:
+    Description: A reference to the public subnet in the 2nd Availability Zone
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: !Sub '${EnvironmentName}-PUB2-SN'
+  PrivateSubnet1:
+    Description: A reference to the private subnet in the 1st Availability Zone
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: !Sub '${EnvironmentName}-PRI1-SN'
+  PrivateSubnet2:
+    Description: A reference to the private subnet in the 2nd Availability Zone
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: !Sub '${EnvironmentName}-PRI2-SN'
 Metadata:
   'AWS::CloudFormation::Designer':
     3e7de264-9f5d-4104-bf3f-dadf2a32e6e0:
